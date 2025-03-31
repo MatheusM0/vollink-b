@@ -1,98 +1,143 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Vollink - Sistema de Conexão de Voluntários e Beneficiários
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Vollink é um sistema que conecta voluntários e beneficiários de serviços em datas específicas. A aplicação é composta por microserviços que comunicam eventos assíncronos usando **Kafka** e armazena dados em um banco de dados **PostgreSQL**. A solução foi desenvolvida em **NestJS** e utiliza **Docker** para facilitar a execução de todos os serviços.
 
-## Description
+## Tecnologias Utilizadas
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **NestJS**: Framework para Node.js para construção de APIs escaláveis.
+- **PostgreSQL**: Banco de dados relacional utilizado para armazenar dados do sistema.
+- **Kafka**: Sistema de mensageria para comunicação assíncrona entre microserviços.
+- **Docker**: Contêineres para facilitar o desenvolvimento e deploy.
+- **JWT**: Autenticação e segurança via JSON Web Tokens.
+- **TypeORM**: ORM utilizado para integração com o banco de dados.
 
-## Project setup
+## Funcionalidades
+
+- **Microserviços**:
+  - **Usuários**: Cadastro, autenticação e gerenciamento de usuários.
+  - **Agendamentos**: Criação e gerenciamento de agendamentos de voluntários.
+  - **Notificações**: Envio de notificações sobre ações realizadas (ex: novos usuários, novos agendamentos).
+  - **Estatísticas**: Cálculo e exibição de métricas, como avaliações e desempenho.
+  
+- **Comunicação Assíncrona**:
+  - Utiliza **Kafka** para garantir que os serviços se comuniquem de forma desacoplada e escalável.
+  - Ações como o cadastro de um novo usuário ou a criação de um novo agendamento geram eventos que são consumidos por outros microserviços.
+
+## Arquitetura
+
+A arquitetura do projeto é baseada em **microserviços**, cada um responsável por uma funcionalidade específica. A comunicação entre os serviços é feita através de eventos assíncronos utilizando **Kafka**. O sistema também implementa autenticação JWT para garantir a segurança das rotas.
+
+### Fluxo de Dados
+
+1. **Usuário cadastrado**: O microserviço de **Usuários** envia um evento para o Kafka, notificando outros serviços sobre o novo usuário.
+2. **Novo agendamento**: O microserviço de **Agendamentos** envia um evento de agendamento, que é consumido pelos serviços de **Notificações** e **Estatísticas**.
+3. **Avaliação recebida**: O microserviço de **Estatísticas** consome eventos de avaliações e atualiza as métricas.
+
+## Instalação
+
+### Pré-requisitos
+
+Antes de rodar o projeto, certifique-se de ter as seguintes ferramentas instaladas:
+
+- **Node.js** (versão 18 ou superior)
+- **Docker** (se for usar contêineres)
+- **PostgreSQL** (se não usar o Docker)
+- **Kafka** (se não usar o Docker)
+
+### Passos para rodar o projeto
+
+1. **Clonar o repositório**:
+
+   ```bash
+   git clone https://github.com/username/vollink.git
+   cd vollink
+   ```
+
+2. **Instalar dependências**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Configurar o Kafka e PostgreSQL**
+
+   Se você estiver usando **Docker** para Kafka e PostgreSQL, você pode rodar o seguinte comando para iniciar os contêineres:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   Caso contrário, configure as variáveis de ambiente no `.env`:
+
+   ```dotenv
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=vollink
+   DB_PASSWORD=senha123
+   DB_NAME=vollink_db
+   KAFKA_BROKER=localhost:9092
+   KAFKA_GROUP_ID=vollink-group
+   ```
+
+4. **Rodar o servidor**:
+
+   Após configurar o banco de dados e o Kafka, inicie o servidor com:
+
+   ```bash
+   npm run start:dev
+   ```
+
+5. **Acessar a API**:
+
+   A API estará disponível em `http://localhost:3000`.
+
+## Testes
+
+O projeto possui testes unitários e de integração para garantir que os serviços funcionem conforme o esperado.
+
+Para rodar os testes:
 
 ```bash
-$ npm install
+npm run test
 ```
 
-## Compile and run the project
+## Docker
+
+Se preferir rodar os contêineres do Kafka e PostgreSQL via Docker, basta usar o `docker-compose`:
+
+1. **Iniciar os serviços**:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Verificar os contêineres**:
+
+   ```bash
+   docker ps
+   ```
+
+Isso iniciará os serviços do Kafka e PostgreSQL em contêineres Docker, permitindo que você se concentre apenas no desenvolvimento.
+
+## Estrutura do Projeto
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+src/
+├── app.module.ts           # Módulo principal
+├── modules/
+│   ├── reviews/            # Módulo de avaliações
+│   ├── users/              # Módulo de usuários
+│   ├── appointments/       # Módulo de agendamentos
+│   └── notifications/      # Módulo de notificações
+├── config/                 # Arquivos de configuração (Kafka, DB, etc.)
+└── common/                 # Funções comuns, utilitários
 ```
 
-## Run tests
+## Contribuição
 
-```bash
-# unit tests
-$ npm run test
+Sinta-se à vontade para abrir **issues** ou **pull requests**. Ficaremos felizes em colaborar!
 
-# e2e tests
-$ npm run test:e2e
+## Licença
 
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Este projeto está sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
