@@ -1,0 +1,11 @@
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: vollink
+      POSTGRES_PASSWORD: senha123  # Deve ser a mesma do .env
+      POSTGRES_DB: vollink_db
+    ports:
+      - "5432:5432"
