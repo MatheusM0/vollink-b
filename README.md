@@ -67,4 +67,4 @@ O **Vollink** é um sistema que conecta voluntários e beneficiários, facilitan
 Este projeto está licenciado sob a licença MIT.
 
 ## Contato
-Se precisar de ajuda ou quiser colaborar, entre em contato conosco pelo e-mail: support@vollink.com
+Se precisar de ajuda ou quiser colaborar, entre em contato conosco pelo e-mail:
