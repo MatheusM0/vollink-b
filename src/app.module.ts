@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -17,10 +19,12 @@ import { UsersModule } from './modules/users/users.module';
       password: process.env.DB_PASSWORD?.toString() || 'senha123', // Garante que a senha seja uma string
       database: process.env.DB_NAME || 'vollink_db',
       autoLoadEntities: true,
-      synchronize: process.env.DB_SYNC === 'true',
+      synchronize: true,
     }),
     ReviewsModule,
-    UsersModule, 
+    UsersModule,
+    AuthModule,
+    EventsModule, 
   ],
 })
 export class AppModule {}

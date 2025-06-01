@@ -12,13 +12,13 @@ export class Event {
   @Column()
   description: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date: Date;
+  @Column()
+  date: string;
 
   @Column()
   location: string;
 
   @ManyToOne(() => User, (user) => user.events)
-  organizer: User;
+  volunteer: User;
   participants: any;
 }

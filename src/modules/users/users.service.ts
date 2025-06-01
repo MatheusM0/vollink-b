@@ -7,27 +7,35 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
-  findByUsername(username: string) {
-      throw new Error('Method not implemented.');
-  }
+
   constructor(
     private readonly kafkaProducer: KafkaProducerService,
     
     @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    private usersRepository: Repository<User>,
   ) {}
 
-  async createUser(name: string, email: string, password: any) {
-    const user = { name, email };
+  async createUser(name: string, email: string, username: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = this.usersRepository.create({
+      name,
+      email,
+      username,
+      password: hashedPassword,
+    }); 
 
     // Enviar evento para o Kafka
     await this.kafkaProducer.sendMessage('user.created', user);
 
-    return user;
+    return this.usersRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {
     return this.usersRepository.find();
+  }
+
+  async findByUsername(username: string){
+    return this.usersRepository.findOne({ where: { username } });
   }
 
   private processUsers(users: string[], callback: (user: string) => void): void {

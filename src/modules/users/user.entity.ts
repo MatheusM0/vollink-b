@@ -1,17 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    name: string;
+    @Column({ unique: true })
+    username: string;
 
     @Column({ unique: true})
     email: string;
 
     @Column()
-    passwordHash: string;
+    name: string;
+
+    @Column()
+    password: string;
     events: any;
+  
+
+    
 }

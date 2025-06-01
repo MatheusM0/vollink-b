@@ -2,7 +2,7 @@ import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Injectable, ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { LoginDto } from './dto/login.dto';
+// import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
@@ -12,11 +12,10 @@ export class LocalAuthGuard extends AuthGuard('local') {
 }
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() LoginDto: LoginDto) {
-    return this.authService.login(LoginDto);
+  async login(@Body() body: { username: string; password: string }) {
+    return this.authService.login(body.username, body.password);
   }
 }
