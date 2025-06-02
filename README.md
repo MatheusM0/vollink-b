@@ -1,68 +1,72 @@
 
-# Vollink - Backend
+# Vollink
 
-## Descrição
-O **Vollink** é um sistema que conecta voluntários e beneficiários, facilitando o gerenciamento de tarefas e o envio de notificações em tempo real.
+Vollink é uma plataforma que conecta voluntários a pessoas que precisam de ajuda em atividades do dia a dia. A aplicação foi desenvolvida utilizando NestJS para o backend e React com Vite e Tailwind CSS para o frontend.
+
+## Funcionalidades
+
+- Cadastro e autenticação de usuários
+- Escolha entre perfil de voluntário ou beneficiário
+- Voluntário pode registrar serviços disponíveis
+- Beneficiário pode visualizar e solicitar serviços
+- Página "Meus Serviços" para voluntários
+- API protegida por JWT
 
 ## Tecnologias Utilizadas
-- **NestJS**: Framework para construção do backend.
-- **PostgreSQL**: Banco de dados relacional.
-- **Kafka**: Sistema de mensageria assíncrona.
-- **TypeORM**: ORM para interação com o banco de dados.
 
-## Estrutura do Projeto
-- **Modules**: Contém os módulos principais do sistema (ex: Usuários, Agendamentos, Notificações).
-- **Services**: Implementações dos serviços para comunicação com Kafka e manipulação de dados.
-- **Config**: Configurações globais do sistema (ex: Kafka, Banco de Dados).
-- **Controllers**: Responsáveis pelas rotas e lógica de controle do fluxo do sistema.
+- **Backend:** Node.js, NestJS, TypeORM, PostgreSQL, Kafka
+- **Frontend:** React, Vite, Tailwind CSS, Axios
+- **Outros:** Docker, JWT, Vercel (Frontend)
 
-## Como Rodar o Projeto
+## Como Executar o Projeto
 
-1. **Clone o repositório**:
-   ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd vollink-backend
-   ```
+### Pré-requisitos
 
-2. **Instale as dependências**:
-   ```bash
-   npm install
-   ```
+- Node.js e npm
+- Docker (para subir banco e Kafka)
+- PostgreSQL (caso não use Docker)
+- Vite (já incluído no `devDependencies`)
 
-3. **Configurações**:
-   Crie um arquivo `.env` com as variáveis necessárias:
-   ```plaintext
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=vollink
-   DB_PASSWORD=senha123
-   DB_NAME=vollink_db
-   KAFKA_BROKER=localhost:9092
-   KAFKA_GROUP_ID=vollink-group
-   ```
+### Backend
 
-4. **Execute o projeto**:
-   ```bash
-   npm run start
-   ```
+```bash
+git clone https://github.com/seu-usuario/vollink-b.git
+cd vollink-b
+npm install
+npm run start
+```
 
-## Como Contribuir
+Crie um arquivo `.env` com:
 
-1. **Fork o repositório**.
-2. **Crie uma branch**:
-   ```bash
-   git checkout -b nome-da-sua-branch
-   ```
-3. **Faça suas alterações** e crie commits:
-   ```bash
-   git commit -m "Descrição das alterações"
-   ```
-4. **Push suas alterações** para o repositório remoto:
-   ```bash
-   git push origin nome-da-sua-branch
-   ```
-5. **Abra um pull request**.
+```
+JWT_SECRET=sua_chave_secreta
+DATABASE_URL=postgres://user:password@localhost:5432/seubanco
+```
+
+### Frontend
+
+```bash
+git clone https://github.com/seu-usuario/vollink-frontend.git
+cd vollink-frontend
+npm install
+npm run dev
+```
+
+No arquivo `.env` do frontend:
+
+```
+VITE_API_URL=http://localhost:3000
+```
+
+## Autores
+
+Este projeto foi desenvolvido por:
+
+- Matheus Mesquita ([@MatheusM0](https://github.com/MatheusM0))
+- Bruno Castro ([@brunocastro](https://github.com/brunocastro))
+
+Contribuições são bem-vindas!
 
 ## Licença
-Este projeto está licenciado sob a licença MIT.
 
+Este projeto está licenciado sob a MIT License.
